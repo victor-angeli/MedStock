@@ -1,0 +1,168 @@
+// MedStock — Schema do Banco de Dados
+// Prisma ORM + PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  FARMACEUTICO
+  MEDICO
+  ENFERMEIRO
+}
+
+enum MovimentacaoTipo {
+  ENTRADA
+  SAIDA
+}
+
+enum MedicamentoTipo {
+  CAPSULA
+  COMPRIMIDO
+  LIQUIDO
+  INJETAVEL
+  POMADA
+  OUTRO
+}
+
+enum EstoqueStatus {
+  OK
+  BAIXO
+  CRITICO
+  VENCENDO
+  VENCIDO
+}
+
+// ─── Clínica ──────────────────────────────────────────────────────────────────
+
+model Clinica {
+  id          String   @id @default(cuid())
+  nome        String
+  cnpj        String?  @unique
+  endereco    String?
+  telefone    String?
+  email       String?
+  ativo       Boolean  @default(true)
+  criadoEm   DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  usuarios       Usuario[]
+  medicamentos   Medicamento[]
+  movimentacoes  Movimentacao[]
+
+  @@map("clinicas")
+}
+
+// ─── Usuário / Colaborador ────────────────────────────────────────────────────
+
+model Usuario {
+  id           String   @id @default(cuid())
+  nome         String
+  email        String   @unique
+  senhaHash    String
+  role         UserRole @default(FARMACEUTICO)
+  avatarUrl    String?
+  ativo        Boolean  @default(true)
+  clinicaId    String
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  clinica       Clinica        @relation(fields: [clinicaId], references: [id])
+  movimentacoes Movimentacao[]
+
+  @@map("usuarios")
+}
+
+// ─── Fornecedor ───────────────────────────────────────────────────────────────
+
+model Fornecedor {
+  id           String   @id @default(cuid())
+  nome         String
+  cnpj         String?  @unique
+  contato      String?
+  telefone     String?
+  email        String?
+  ativo        Boolean  @default(true)
+  criadoEm    DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+
+  medicamentos Medicamento[]
+
+  @@map("fornecedores")
+}
+
+// ─── Medicamento ──────────────────────────────────────────────────────────────
+
+model Medicamento {
+  id              String          @id @default(cuid())
+  nome            String
+  principioAtivo  String?
+  tipo            MedicamentoTipo @default(COMPRIMIDO)
+  concentracao    String?         // ex: "500mg", "10mg/ml"
+  fabricante      String?
+  registro        String?         // registro ANVISA
+  estoqueAtual    Int             @default(0)
+  estoqueMinimo   Int             @default(10)
+  unidade         String          @default("un")
+  ativo           Boolean         @default(true)
+  clinicaId       String
+  fornecedorId    String?
+  criadoEm       DateTime        @default(now())
+  atualizadoEm   DateTime        @updatedAt
+
+  clinica       Clinica        @relation(fields: [clinicaId], references: [id])
+  fornecedor    Fornecedor?    @relation(fields: [fornecedorId], references: [id])
+  lotes         Lote[]
+  movimentacoes Movimentacao[]
+
+  @@map("medicamentos")
+}
+
+// ─── Lote ─────────────────────────────────────────────────────────────────────
+
+model Lote {
+  id             String   @id @default(cuid())
+  numero         String   // número do lote (ex: L24A123)
+  validade       DateTime
+  quantidadeInicial Int
+  quantidadeAtual   Int
+  medicamentoId  String
+  criadoEm      DateTime @default(now())
+  atualizadoEm  DateTime @updatedAt
+
+  medicamento   Medicamento    @relation(fields: [medicamentoId], references: [id])
+  movimentacoes Movimentacao[]
+
+  @@unique([numero, medicamentoId])
+  @@map("lotes")
+}
+
+// ─── Movimentação ─────────────────────────────────────────────────────────────
+
+model Movimentacao {
+  id            String           @id @default(cuid())
+  tipo          MovimentacaoTipo
+  quantidade    Int
+  observacao    String?
+  justificativa String?          // obrigatória para saídas
+  medicamentoId String
+  loteId        String?
+  usuarioId     String           // quem fez a movimentação
+  clinicaId     String
+  criadoEm     DateTime         @default(now())
+
+  medicamento Medicamento @relation(fields: [medicamentoId], references: [id])
+  lote        Lote?       @relation(fields: [loteId], references: [id])
+  usuario     Usuario     @relation(fields: [usuarioId], references: [id])
+  clinica     Clinica     @relation(fields: [clinicaId], references: [id])
+
+  @@map("movimentacoes")
+}
