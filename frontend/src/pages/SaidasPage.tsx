@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowUpCircle, Plus, Search, Package, ChevronDown } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { hasPermission } from '@/lib/permissions'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const SAIDAS = [
   { id:'1', data:'06/05/2026', hora:'08:42', medicamento:'Dipirona 500mg',      lote:'D24B456', quantidade: 20, responsavel:'Carlos Silva',   destino:'Consultório 1', justificativa:'Atendimento ambulatorial' },
@@ -16,8 +17,18 @@ const SAIDAS = [
 export function SaidasPage() {
   const { user } = useAuthStore()
   const canCreate = hasPermission(user?.role, 'create:saidas')
-  const [busca, setBusca]     = useState('')
-  const [showModal, setShowModal] = useState(true)
+  const [busca, setBusca] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    if (searchParams.get('new') === 'true') {
+      setShowModal(true)
+
+      navigate('/saidas', { replace: true })
+    }
+  }, [searchParams, navigate])
 
   const filtrados = SAIDAS.filter(s =>
     s.medicamento.toLowerCase().includes(busca.toLowerCase()) ||

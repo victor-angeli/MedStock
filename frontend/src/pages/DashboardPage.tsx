@@ -232,8 +232,8 @@ export function DashboardPage() {
         <h2 className="text-sm font-bold text-slate-700 mb-4">Ações Rápidas</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5 w-full">
           {[
-            { label: 'Nova Entrada', sub: 'Registrar entrada', icon: '↓', color: 'bg-blue-600', to: '/entradas' },
-            { label: 'Nova Saída',   sub: 'Registrar saída',  icon: '↑', color: 'bg-blue-600', to: '/saidas'   },
+            { label: 'Nova Entrada', sub: 'Registrar entrada', icon: '↓', color: 'bg-blue-600', to: '/entradas?new=true' },
+            { label: 'Nova Saída',   sub: 'Registrar saída',  icon: '↑', color: 'bg-blue-600', to: '/saidas?new=true' },
             { label: 'Novo Medicamento', sub: 'Cadastrar item', icon: '+', color: 'bg-blue-600', to: '/medicamentos' },
             { label: 'Relatório de Estoque', sub: 'Gerar relatório', icon: '📋', color: 'bg-blue-600', to: '/relatorios' },
             { label: 'Ver Alertas', sub: 'Alertas ativos', icon: '🔔', color: 'bg-red-500', badge: alertasNaoLidos, to: '/alertas' },

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowDownCircle, Plus, Search, ChevronDown, Package, CheckCircle } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { hasPermission } from '@/lib/permissions'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 interface Entrada {
   id: string; data: string; hora: string; medicamento: string
@@ -33,10 +34,21 @@ export function EntradasPage() {
   const canCreate = hasPermission(user?.role, 'create:entradas')
   const [entradas, setEntradas] = useState<Entrada[]>(ENTRADAS_INICIAIS)
   const [busca, setBusca]       = useState('')
-  const [showModal, setShowModal] = useState(true)
   const [form, setForm]         = useState<FormState>(FORM_VAZIO)
   const [erros, setErros]       = useState<Partial<FormState>>({})
   const [sucesso, setSucesso]   = useState(false)
+
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const [showModal, setShowModal] = useState(false)
+
+  useEffect(() => {
+  if (searchParams.get('new') === 'true') {
+    setShowModal(true)
+
+    navigate('/entradas', { replace: true })
+  }
+}, [searchParams, navigate])
 
   const filtrados = entradas.filter(e =>
     e.medicamento.toLowerCase().includes(busca.toLowerCase()) ||
