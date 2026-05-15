@@ -33,7 +33,7 @@ export function EntradasPage() {
   const canCreate = hasPermission(user?.role, 'create:entradas')
   const [entradas, setEntradas] = useState<Entrada[]>(ENTRADAS_INICIAIS)
   const [busca, setBusca]       = useState('')
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(true)
   const [form, setForm]         = useState<FormState>(FORM_VAZIO)
   const [erros, setErros]       = useState<Partial<FormState>>({})
   const [sucesso, setSucesso]   = useState(false)

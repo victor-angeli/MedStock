@@ -17,7 +17,7 @@ export function SaidasPage() {
   const { user } = useAuthStore()
   const canCreate = hasPermission(user?.role, 'create:saidas')
   const [busca, setBusca]     = useState('')
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(true)
 
   const filtrados = SAIDAS.filter(s =>
     s.medicamento.toLowerCase().includes(busca.toLowerCase()) ||

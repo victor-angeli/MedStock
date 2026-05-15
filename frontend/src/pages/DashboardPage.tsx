@@ -2,6 +2,7 @@ import { Package, CheckCircle, AlertTriangle, Calendar, ArrowRight } from 'lucid
 import { useAuthStore } from '@/store/authStore'
 import { useAlertsStore } from '@/store/alertsStore'
 import { cn } from '@/lib/utils'
+import { Link } from 'react-router-dom'
 
 const kpiCards = [
   {
@@ -229,31 +230,60 @@ export function DashboardPage() {
       {/* Ações Rápidas */}
       <div className="card p-5">
         <h2 className="text-sm font-bold text-slate-700 mb-4">Ações Rápidas</h2>
-        <div className="flex gap-3 flex-wrap">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5 w-full">
           {[
             { label: 'Nova Entrada', sub: 'Registrar entrada', icon: '↓', color: 'bg-blue-600', to: '/entradas' },
             { label: 'Nova Saída',   sub: 'Registrar saída',  icon: '↑', color: 'bg-blue-600', to: '/saidas'   },
             { label: 'Novo Medicamento', sub: 'Cadastrar item', icon: '+', color: 'bg-blue-600', to: '/medicamentos' },
             { label: 'Relatório de Estoque', sub: 'Gerar relatório', icon: '📋', color: 'bg-blue-600', to: '/relatorios' },
             { label: 'Ver Alertas', sub: 'Alertas ativos', icon: '🔔', color: 'bg-red-500', badge: alertasNaoLidos, to: '/alertas' },
-          ].map((action) => (
-            <button
+          ]
+          .map((action) => (
+            <Link
               key={action.label}
-              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all min-w-[110px] relative group"
+              to={action.to}
+              className="
+                relative
+                flex flex-col items-center justify-center
+                gap-2
+                p-4
+                rounded-xl
+                border border-slate-200
+                hover:border-blue-300
+                hover:bg-blue-50
+                hover:-translate-y-1
+                hover:shadow-md
+                transition-all duration-200
+                w-full
+                min-h-[115px]
+                group
+              "
             >
-              {action.badge && (
-                <span className="absolute -top-1.5 -right-1.5 text-[9px] font-bold bg-red-500 text-white w-4 h-4 rounded-full flex items-center justify-center">
-                  {action.badge}
-                </span>
-              )}
-              <div className={cn('w-10 h-10 rounded-lg flex items-center justify-center text-white text-lg', action.color)}>
+              <div
+                className={cn(
+                  `
+                    w-11 h-11
+                    rounded-xl
+                    flex items-center justify-center
+                    text-white text-xl
+                    shadow-sm
+                  `,
+                  action.color
+                )}
+              >
                 {action.icon}
               </div>
-              <div className="text-center">
-                <p className="text-xs font-semibold text-slate-700 group-hover:text-blue-700">{action.label}</p>
-                <p className="text-[10px] text-slate-400">{action.sub}</p>
+
+              <div className="text-center space-y-0.5">
+                <p className="text-xs font-semibold text-slate-700">
+                  {action.label}
+                </p>
+
+                <p className="text-[10px] text-slate-400">
+                  {action.sub}
+                </p>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       </div>
