@@ -14,6 +14,7 @@ const kpiCards = [
     bg: 'bg-blue-50',
     border: 'border-l-blue-500',
     link: 'Ver todos →',
+    to: '/medicamentos',
   },
   {
     label: 'Estoque OK',
@@ -24,6 +25,7 @@ const kpiCards = [
     bg: 'bg-green-50',
     border: 'border-l-green-500',
     link: 'Ver detalhes →',
+    to: '/estoque',
   },
   {
     label: 'Estoque Baixo',
@@ -34,6 +36,7 @@ const kpiCards = [
     bg: 'bg-yellow-50',
     border: 'border-l-yellow-500',
     link: 'Ver itens →',
+    to: '/alertas?tipo=estoque',
   },
   {
     label: 'Vencendo em 30 dias',
@@ -44,6 +47,7 @@ const kpiCards = [
     bg: 'bg-red-50',
     border: 'border-l-red-500',
     link: 'Ver alertas →',
+    to: '/alertas?tipo=vencimento',
   },
 ]
 
@@ -93,9 +97,9 @@ export function DashboardPage() {
                 <card.icon className={cn('w-5 h-5', card.color)} />
               </div>
             </div>
-            <button className="action-link text-xs">
+            <Link to={card.to} className="action-link text-xs">
               {card.link}
-            </button>
+            </Link>
           </div>
         ))}
       </div>

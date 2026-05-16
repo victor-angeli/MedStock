@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Bell, Calendar, AlertTriangle, Package, CheckCheck, ChevronRight } from 'lucide-react'
 import { useAlertsStore, AlertaTipo } from '@/store/alertsStore'
+import { useSearchParams } from 'react-router-dom'
 
 const TIPO_CFG = {
   vencimento:   { label:'Vencimento',   Icon:Calendar,      bg:'bg-orange-100', ico:'text-orange-500', border:'border-orange-200' },
@@ -16,7 +17,22 @@ const PRIOR_CFG = {
 
 export function AlertasPage() {
   const { alertas, marcarLido, marcarTodos } = useAlertsStore()
-  const [filtro, setFiltro]   = useState<AlertaTipo | 'todos'>('todos')
+
+  const [searchParams] = useSearchParams()
+
+  const tipo = searchParams.get('tipo')
+
+  const filtroInicial: AlertaTipo | 'todos' =
+    tipo === 'vencimento' ||
+    tipo === 'estoque' ||
+    tipo === 'movimentacao'
+      ? tipo
+      : 'todos'
+
+  const [filtro, setFiltro] = useState<AlertaTipo | 'todos'>(
+    filtroInicial
+  )
+
   const [soNaoLidos, setSoNaoLidos] = useState(false)
 
   const naoLidos = alertas.filter(a => !a.lido).length
