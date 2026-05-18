@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Pill, ArrowDownCircle, ArrowUpCircle,
   Package, Bell, BarChart2, Users, Truck, Building2, Settings, LogOut,
 } from 'lucide-react'
-import logoMedstock from '@/assets/logo_medstock.jpg'
+import logoMedstock from '../../assets/logo_medstock.jpg'
 import { useAuthStore } from '@/store/authStore'
 import { useAlertsStore } from '@/store/alertsStore'
 import { canAccess, roleLabel } from '@/lib/permissions'
@@ -44,23 +44,34 @@ export function Sidebar() {
       className="flex flex-col bg-[#0D47A1] text-white"
       style={{ width: 'var(--sidebar-width)', minWidth: 'var(--sidebar-width)' }}
     >
-      {/* ── Logo (centralizada e grande) ── */}
-      <div className="flex flex-col items-center px-4 pt-6 pb-4 border-b border-blue-800">
-        <div
-          className="bg-white rounded-2xl flex items-center justify-center overflow-hidden shadow-lg mb-3"
-          style={{ width: 92, height: 92, padding: 5 }}
-        >
-          <img
-            src={logoMedstock}
-            alt="MedStock"
-            className="w-full h-full object-contain rounded-xl"
-          />
-        </div>
-        <div className="text-center">
-          <div className="text-base font-extrabold tracking-wide leading-tight">MedStock</div>
-          <div className="text-[11px] text-blue-300 leading-tight mt-0.5">Controle de Estoque</div>
-        </div>
+{/* ── Logo (centralizada e grande) ── */}
+<div className="flex flex-col items-center px-4 pt-6 pb-4 border-b border-blue-800">
+  <button
+    onClick={() => navigate("/dashboard")}
+    className="flex flex-col items-center focus:outline-none"
+  >
+    <div
+      className="bg-white rounded-2xl flex items-center justify-center overflow-hidden shadow-lg mb-3"
+      style={{ width: 92, height: 92, padding: 5 }}
+    >
+      <img
+        src={logoMedstock}
+        alt="MedStock"
+        className="w-full h-full object-contain rounded-xl"
+      />
+    </div>
+
+    <div className="text-center">
+      <div className="text-base font-extrabold tracking-wide leading-tight">
+        MedStock
       </div>
+
+      <div className="text-[11px] text-blue-300 leading-tight mt-0.5">
+        Controle de Estoque
+      </div>
+    </div>
+  </button>
+</div>
 
       {/* ── Organização ── */}
       <div className="px-4 py-2.5 border-b border-blue-900/60">
