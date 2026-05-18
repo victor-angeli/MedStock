@@ -110,7 +110,12 @@ export function DashboardPage() {
         <div className="col-span-2 card">
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
             <h2 className="text-sm font-bold text-slate-700">Estoque com Alerta</h2>
-            <button className="action-link text-xs">Ver todos os alertas →</button>
+            <Link
+              to="/alertas"
+              className="text-xs font-semibold text-[#1A73E8] hover:underline"
+            >
+              Ver todos os alertas
+            </Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -156,51 +161,98 @@ export function DashboardPage() {
 
         {/* Lateral direita */}
         <div className="space-y-4">
-          {/* Alertas importantes */}
-          <div className="card">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-              <h2 className="text-sm font-bold text-slate-700">Alertas Importantes</h2>
-              <button className="action-link text-xs">Ver todos</button>
-            </div>
-            <div className="divide-y divide-slate-50">
-              <div className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 cursor-pointer group">
-                <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Calendar className="w-4 h-4 text-red-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-red-700">47 medicamentos vencem em até 30 dias</p>
-                  <p className="text-xs text-slate-400 mt-0.5">Risco de perda e uso inadequado</p>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 mt-1 flex-shrink-0" />
-              </div>
-              <div className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 cursor-pointer group">
-                <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-yellow-700">87 medicamentos com estoque abaixo do mínimo</p>
-                  <p className="text-xs text-slate-400 mt-0.5">Reposição recomendada</p>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 mt-1 flex-shrink-0" />
-              </div>
-              <div className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 cursor-pointer group">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Package className="w-4 h-4 text-blue-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-blue-700">5 itens sem movimentação há mais de 180 dias</p>
-                  <p className="text-xs text-slate-400 mt-0.5">Revise a necessidade de estoque</p>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 mt-1 flex-shrink-0" />
-              </div>
-            </div>
-          </div>
+      {/* Alertas importantes */}
+<div className="card">
+  <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+    <h2 className="text-sm font-bold text-slate-700">
+      Alertas Importantes
+    </h2>
 
+    <Link
+      to="/alertas"
+      className="text-xs font-semibold text-[#1A73E8] hover:underline"
+    >
+      Ver todos
+    </Link>
+  </div>
+
+  <div className="divide-y divide-slate-50">
+
+    <Link
+      to="/alertas?tipo=vencimento"
+      className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 group transition-colors"
+    >
+      <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+        <Calendar className="w-4 h-4 text-red-600" />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold text-red-700">
+          47 medicamentos vencem em até 30 dias
+        </p>
+
+        <p className="text-xs text-slate-400 mt-0.5">
+          Risco de perda e uso inadequado
+        </p>
+      </div>
+
+      <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 mt-1 flex-shrink-0" />
+    </Link>
+
+    <Link
+      to="/alertas?tipo=estoque"
+      className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 group transition-colors"
+    >
+      <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+        <AlertTriangle className="w-4 h-4 text-yellow-600" />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold text-yellow-700">
+          87 medicamentos com estoque abaixo do mínimo
+        </p>
+
+        <p className="text-xs text-slate-400 mt-0.5">
+          Reposição recomendada
+        </p>
+      </div>
+
+      <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 mt-1 flex-shrink-0" />
+    </Link>
+
+    <Link
+      to="/alertas?tipo=movimentacao"
+      className="flex items-start gap-3 px-4 py-3 hover:bg-slate-50 group transition-colors"
+    >
+      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+        <Package className="w-4 h-4 text-blue-600" />
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold text-blue-700">
+          5 itens sem movimentação há mais de 180 dias
+        </p>
+
+        <p className="text-xs text-slate-400 mt-0.5">
+          Revise a necessidade de estoque
+        </p>
+      </div>
+
+      <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 mt-1 flex-shrink-0" />
+    </Link>
+
+  </div>
+</div>
           {/* Movimentações recentes */}
           <div className="card">
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
               <h2 className="text-sm font-bold text-slate-700">Movimentações Recentes</h2>
-              <button className="action-link text-xs">Ver todas</button>
+              <Link
+                to="/movimentacoes"
+                className="text-xs font-semibold text-[#1A73E8] hover:underline"
+              >
+                
+              </Link>
             </div>
             <div className="divide-y divide-slate-50">
               {mockMovimentacoes.map((mov, i) => (
